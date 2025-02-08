@@ -3,7 +3,8 @@ const fs = require("fs");
 const url = require("url");
 const path = require("path");
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Function to serve static files
 function serveStaticFile(res, filePath, contentType) {
