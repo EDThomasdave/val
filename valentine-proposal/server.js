@@ -3,7 +3,7 @@ const fs = require("fs");
 const url = require("url");
 const path = require("path");
 
-const PORT = process.env.PORT || 10000;  // Change port if needed
+const PORT = process.env.PORT || 10000;
 
 // Function to serve static files
 function serveStaticFile(res, filePath, contentType) {
@@ -49,14 +49,23 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Handle "Yes" or "No" responses
+    // Handle "Yes" or "No" responses (LOG REASON IF "NO")
     if (pathname === "/response") {
         const answer = queryObject.answer;
+        const reason = queryObject.reason || "N/A"; // Default to "N/A" if no reason provided
+
         if (!answer) {
             res.writeHead(400, { "Content-Type": "text/plain" });
             res.end("Bad Request");
             return;
         }
+
+        // ✅ Log the response in console
+        console.log(`📝 Response Received:`);
+        console.log(`➡ Answer: ${answer}`);
+        if (answer === "No") console.log(`➡ Reason: ${reason}`);
+        console.log(`📅 Time: ${new Date().toLocaleString()}`);
+        console.log("----------------------------");
 
         // Redirect based on answer
         res.writeHead(302, {
