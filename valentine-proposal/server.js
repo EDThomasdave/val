@@ -31,7 +31,19 @@ const server = http.createServer((req, res) => {
     if (staticPages.includes(pathname)) {
         serveStaticFile(res, pathname === "/" ? "index.html" : pathname.substring(1), "text/html");
         return;
-    }
+    } else if (pathname === "/log-reason") {
+    const reason = queryObject.reason || "N/A";
+
+    // Log the reason in Render console
+    console.log(`📝 Reason for saying No: ${reason}`);
+    console.log("----------------------------");
+
+    // Respond to the client
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Reason logged successfully");
+    return;
+}
+
 
     // Serve static assets (CSS, JS, Images)
     const ext = path.extname(pathname);
