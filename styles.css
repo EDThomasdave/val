@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Background for specific pages */
+.index-page {
+    background-image: url('background1.jpg');
+}
+
+.confirm-page {
+    background-image: url('background2.jpg');
+}
+
+.reason-page {
+    background-image: url('background3.jpg');
+}
+
+.yes-page {
+    background-image: url('background4.jpg');
+}
+
+/* Timeline Styling */
+.timeline {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.timeline ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.timeline li {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+h1 {
+    color: #e74c3c;
+}
+
+.container {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#celebrateButton {
+    background-color: #f39c12;
+    color: #fff;
+}
+
+#kitchenButton, #preMadeButton, #noHotelButton {
+    background-color: #2ecc71;
+    color: #fff;
+}
