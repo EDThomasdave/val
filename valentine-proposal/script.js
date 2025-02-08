@@ -3,5 +3,5 @@ document.getElementById("yesButton").addEventListener("click", function () {
 });
 
 document.getElementById("noButton").addEventListener("click", function () {
-    window.location.href = "http://localhost:3000/response?answer=No";
+    window.location.href = "http://tanubaby.site/confirm.html";
 });
