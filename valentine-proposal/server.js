@@ -4,7 +4,6 @@ const url = require("url");
 const path = require("path");
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Function to serve static files
 function serveStaticFile(res, filePath, contentType) {
@@ -26,16 +25,16 @@ const server = http.createServer((req, res) => {
 
     console.log("Request received for:", pathname);
 
-    // Serve the main page when visiting localhost:3000
+    // Serve main page
     if (pathname === "/") {
-        serveStaticFile(res, "index.html", "text/html");
+        serveStaticFile(res, path.join(__dirname, "index.html"), "text/html");
         return;
     } else if (pathname === "/roseDay.html") {
-        serveStaticFile(res, "roseDay.html", "text/html");
+        serveStaticFile(res, path.join(__dirname, "roseDay.html"), "text/html");
         return;
     }
 
-    // Serve static files (CSS, JS, etc.)
+    // Serve static files (CSS, JS, Images)
     const ext = path.extname(pathname);
     if (ext) {
         const contentType = {
@@ -44,17 +43,17 @@ const server = http.createServer((req, res) => {
             ".png": "image/png",
             ".jpg": "image/jpeg",
             ".gif": "image/gif",
-            ".html": "text/html"  // Added for HTML files
+            ".html": "text/html"
         }[ext] || "text/plain";
 
-        serveStaticFile(res, "." + pathname, contentType);
+        serveStaticFile(res, path.join(__dirname, pathname), contentType);
         return;
     }
 
-    // Handle user responses (Yes or No)
+    // Handle user responses
     if (pathname === "/response") {
         const answer = queryObject.answer;
-        const reason = queryObject.reason || "N/A"; // Default to "N/A" if no reason
+        const reason = queryObject.reason || "N/A";
 
         if (!answer) {
             res.writeHead(400, { "Content-Type": "text/plain" });
@@ -62,16 +61,14 @@ const server = http.createServer((req, res) => {
             return;
         }
 
-        // Log answer and reason to responses.txt
         const logEntry = `Answer: ${answer}\nReason: ${reason}\nTime: ${new Date().toLocaleString()}\n\n`;
-        fs.appendFile("responses.txt", logEntry, (err) => {
+        fs.appendFile(path.join(__dirname, "responses.txt"), logEntry, (err) => {
             if (err) {
                 res.writeHead(500, { "Content-Type": "text/plain" });
                 res.end("Error writing to file.");
                 return;
             }
 
-            // Redirect based on the answer
             res.writeHead(302, {
                 Location: answer === "Yes" ? "/yes.html" : "/confirm.html",
             });
@@ -81,7 +78,7 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Handle responses for Kitchen, Pre-Made, No Hotel
+    // Handle other choices
     if (pathname === "/log-choice") {
         const choice = queryObject.choice;
 
@@ -91,16 +88,14 @@ const server = http.createServer((req, res) => {
             return;
         }
 
-        // Log the choice (Kitchen, Pre-Made, No Hotel) to responses.txt
         const logEntry = `Choice: ${choice}\nTime: ${new Date().toLocaleString()}\n\n`;
-        fs.appendFile("responses.txt", logEntry, (err) => {
+        fs.appendFile(path.join(__dirname, "responses.txt"), logEntry, (err) => {
             if (err) {
                 res.writeHead(500, { "Content-Type": "text/plain" });
                 res.end("Error writing to file.");
                 return;
             }
 
-            // Redirect to the corresponding page
             let redirectPage = '';
             if (choice === 'Kitchen') {
                 redirectPage = '/kitchen.html';
@@ -117,17 +112,19 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Serve the HTML pages (yes.html, confirm.html, etc.)
-    if (["/yes.html", "/confirm.html", "/reason.html", "/kitchen.html", "/preMade.html", "/noHotel.html"].includes(pathname)) {
-        serveStaticFile(res, pathname.substring(1), "text/html");
+    // Serve other HTML pages
+    const validPages = ["/yes.html", "/confirm.html", "/reason.html", "/kitchen.html", "/preMade.html", "/noHotel.html"];
+    if (validPages.includes(pathname)) {
+        serveStaticFile(res, path.join(__dirname, pathname.substring(1)), "text/html");
         return;
     }
 
-    // If route is unknown, return 404
+    // 404 Not Found
     res.writeHead(404, { "Content-Type": "text/plain" });
     res.end("404 Not Found");
 });
 
-server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+// ✅ Bind to 0.0.0.0 for Render
+server.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
