@@ -72,3 +72,8 @@ button {
     background-color: #2ecc71;
     color: #fff;
 }
+.chocolate-page {
+    background-image: url('chocolate-bg.jpg'); /* Add a chocolate-themed background */
+    background-size: cover;
+    background-position: center;
+}
