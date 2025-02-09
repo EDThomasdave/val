@@ -77,3 +77,10 @@ button {
     background-size: cover;
     background-position: center;
 }
+.chocolate-page img {
+    max-width: 250px;  /* Adjust width (you can tweak this) */
+    height: auto;  /* Maintain aspect ratio */
+    display: block;
+    margin: 20px auto;  /* Center the image */
+    border-radius: 10px;  /* Optional: Rounded corners */
+}
